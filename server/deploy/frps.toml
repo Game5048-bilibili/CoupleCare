@@ -1,0 +1,32 @@
+# ============================================================
+# frps 配置 —— 跑在「有公网 IP 的服务器」上（VPS / 云主机）
+# 文件位置通常是 /etc/frp/frps.toml
+# ============================================================
+
+bindPort = 7000
+
+# HTTP 管理面板（可选，用来看隧道状态）
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "换一个强密码"
+
+# ---------------- 传输层 TLS ----------------
+# 强烈建议开启：手机 -> frps 这一段会被 TLS 保护，
+# 这样 APP 的 auth 帧里那个明文配对码就不会裸奔。
+transport.tls.force = false
+
+# ---------------- 鉴权 ----------------
+# frpc 必须带上同样的 token 才能注册隧道
+auth.method = "token"
+auth.token = "换成你自己的长随机串"
+
+# 日志（0=trace 1=debug 2=info 3=warn 4=error）
+log.to = "/var/log/frps.log"
+log.level = "info"
+log.maxDays = 7
+
+# 允许客户端申请的（子）域名后缀，用不到就留空
+allowPorts = [
+    { start = 9000, end = 9999 }   # 限制远程端口范围，避免乱开端口
+]

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">异地之约</string>
+
+    <!-- 通知渠道 -->
+    <string name="channel_tracker_name">常驻运行</string>
+    <string name="channel_tracker_desc">保持与对方的连接，持续同步电量、位置与使用记录</string>
+    <string name="channel_alert_name">提醒</string>
+    <string name="channel_alert_desc">配对成功、连接断开等提示</string>
+
+    <!-- 常驻通知 -->
+    <string name="notif_title">异地之约 · 运行中</string>
+    <string name="notif_action_open">打开</string>
+    <string name="notif_action_stop">停止</string>
+
+    <!-- 底部导航（与 Compose 中显示一致） -->
+    <string name="tab_map">地图</string>
+    <string name="tab_usage">使用记录</string>
+    <string name="tab_settings">设置</string>
+
+    <!-- 权限说明 -->
+    <string name="perm_location_rationale">需要定位权限才能把你在哪里告诉对方</string>
+    <string name="perm_background_rationale">请选择“始终允许”，否则锁屏后位置会中断</string>
+    <string name="perm_usage_rationale">请在使用记录页面打开“异地之约”的开关，才能同步前台应用</string>
+</resources>

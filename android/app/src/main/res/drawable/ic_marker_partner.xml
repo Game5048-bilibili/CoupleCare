@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 对方位置标记：一个带心的地图针 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="36dp"
+    android:height="48dp"
+    android:viewportWidth="36"
+    android:viewportHeight="48">
+    <!-- 针身 -->
+    <path
+        android:fillColor="#B4194E"
+        android:pathData="M18,47 C18,47 34,28.5 34,17.5 C34,8.4 26.8,1 18,1 C9.2,1 2,8.4 2,17.5 C2,28.5 18,47 18,47 Z" />
+    <!-- 内部白心 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M18,25.5 C18,25.5 11.5,21 11.5,16.6 C11.5,13.9 13.6,12 16.1,12 C17.2,12 17.9,12.6 18,13.3 C18.1,12.6 18.8,12 19.9,12 C22.4,12 24.5,13.9 24.5,16.6 C24.5,21 18,25.5 18,25.5 Z" />
+</vector>

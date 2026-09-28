@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ========== 网络 ========== -->
+    <!-- 原生 TCP Socket 通信 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- ========== 定位 ========== -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 后台定位：APP 退到后台后仍要上报位置，Android 10+ 必须单独申请 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- ========== 前台服务 / 保活 ========== -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Android 14 起，每种前台服务类型都要单独声明权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 申请加入电池优化白名单（Doze 免疫），系统设置页才会显示该入口 -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- ========== 通知 ========== -->
+    <!-- Android 13+ 弹通知需要用户授权，常驻通知也受此限制 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- ========== 使用记录 ========== -->
+    <!-- 特殊权限：不能运行时申请，只能跳系统设置由用户手动打开 -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <!-- 读取其它应用名称/图标（API 30+ 包可见性限制）。
+         个人自用场景使用 QUERY_ALL_PACKAGES；若要上架商店需改为 <queries> 白名单。 -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <!-- 硬件可选：没有 GPS 也能装（部分平板/模拟器） -->
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <application
+        android:name=".BaobaoApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.YiDiZhiYue"
+        tools:targetApi="34">
+
+        <!-- 单 Activity + Compose 架构 -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|density|smallestScreenSize"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 常驻前台服务：TCP 长连接 + 各类采集器
+             foregroundServiceType 同时声明 location 与 dataSync：
+               - location  : 后台持续定位（Android 14 需 FOREGROUND_SERVICE_LOCATION + 定位权限已授予）
+               - dataSync  : 网络数据同步（心跳、上报）
+             服务内部会按“当前实际已授予的权限”动态挑选类型，避免 SecurityException。 -->
+        <service
+            android:name=".service.TrackerService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location|dataSync" />
+
+        <!-- 开机 / 应用更新后自启（ColorOS 还需要用户手动允许“自启动”） -->
+        <receiver
+            android:name=".service.BootReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ========== 高德地图 ==========
+             Key 由 app/build.gradle.kts 的 manifestPlaceholders["amapApiKey"] 注入，
+             实际取值来自 android/gradle.properties 的 AMAP_API_KEY。
+             高德要求 Key 与「包名 + 签名 SHA1」绑定，详见 README 第 6 节。 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="${amapApiKey}" />
+
+    </application>
+
+</manifest>

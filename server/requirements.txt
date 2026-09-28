@@ -1,0 +1,16 @@
+# 异地之约 服务端依赖
+#
+# 除了 cryptography 之外全部使用 Python 标准库，所以这个文件非常短。
+#
+# 安装（Ubuntu / Orange Pi）：
+#     sudo apt update
+#     sudo apt install -y python3 python3-pip python3-venv
+#     python3 -m venv .venv
+#     source .venv/bin/activate
+#     pip install -r requirements.txt
+#
+# Orange Pi（ARM64）上 cryptography 官方提供预编译 wheel，
+# 若 pip 版本太老会尝试源码编译（很慢，需要 Rust 工具链），先升级 pip：
+#     pip install --upgrade pip
+
+cryptography>=41.0.0

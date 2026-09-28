@@ -1,0 +1,42 @@
+# ============================================================
+# frpc 配置 —— 跑在 Orange Pi 上（无公网 IP 的那一端）
+# 文件位置通常是 /etc/frp/frpc.toml
+# ============================================================
+
+# frps 所在公网服务器的地址与端口
+serverAddr = "你的公网服务器IP或域名"
+serverPort = 7000
+
+auth.method = "token"
+auth.token = "与 frps.toml 里完全一致的 token"
+
+# 传输层 TLS：开启后 frpc<->frps 全链路加密
+transport.tls.enable = true
+
+log.to = "/var/log/frpc.log"
+log.level = "info"
+log.maxDays = 7
+
+# ---------------- 隧道定义 ----------------
+# 把本机 9527（异地之约服务端）映射到公网服务器的 9527
+[[proxies]]
+name = "baobao-tcp"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 9527
+remotePort = 9527
+
+# 如果公网服务器上 9527 被占用/被运营商封，改成别的端口，
+# 同时记得把 APP 设置页里的端口一起改掉（例如 19527）。
+
+# ---- 可选：只允许你们两台手机的 IP 访问（需要运营商给固定 IP，一般用不到） ----
+# [[proxies]]
+# name = "baobao-tcp"
+# type = "tcp"
+# localIP = "127.0.0.1"
+# localPort = 9527
+# remotePort = 9527
+# [proxies.transport]
+# # 限制连接数，防止被扫
+# useEncryption = true
+# useCompression = false

@@ -1,0 +1,42 @@
+# ---------------- Android ----------------
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/*.iml
+android/captures/
+android/.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+android/app/release/
+android/keystore.properties
+*.jks
+*.keystore
+
+# ---------------- 项目内工具链（tools/ 下载的 JDK/Gradle/SDK） ----------------
+# 约 2.2 GB，是自包含的，删掉后重新跑 tools/setup_toolchain.py 即可恢复
+.toolchain/
+
+# ---------------- Python 服务端 ----------------
+server/.venv/
+server/venv/
+server/__pycache__/
+**/__pycache__/
+*.py[cod]
+server/data/
+*.db
+*.db-wal
+*.db-shm
+server/*.log
+server/deploy/*.local
+
+# ---------------- 编辑器 / 系统 ----------------
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp

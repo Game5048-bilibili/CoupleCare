@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题壳的窗口底色（启动瞬间的背景色，避免白屏闪一下） -->
+    <color name="window_background">#FFFBFE</color>
+</resources>

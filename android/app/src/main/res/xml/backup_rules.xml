@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- 配对码属于敏感信息，禁止云备份/ADB 备份 -->
+    <exclude domain="sharedpref" path="baobao_prefs.xml" />
+    <exclude domain="sharedpref" path="baobao_secure_prefs.xml" />
+</full-backup-content>

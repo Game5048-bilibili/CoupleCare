@@ -1,0 +1,36 @@
+[Unit]
+Description=YiDiZhiYue (异地之约) TCP Server
+Documentation=file:///opt/baobao-server/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=baobao
+Group=baobao
+
+# 按你的实际路径修改
+WorkingDirectory=/opt/baobao-server
+ExecStart=/opt/baobao-server/.venv/bin/python3 /opt/baobao-server/server.py
+
+# 崩溃自动重启（服务端要 7x24 跑，这条很关键）
+Restart=always
+RestartSec=3
+
+# 日志走 journald，用 journalctl -u baobao-server -f 查看
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=baobao-server
+
+# 简单的安全加固：只允许写自己的目录
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/baobao-server/data
+
+# Orange Pi 上把进程优先级稍微降低，别和 frpc 抢资源
+Nice=5
+
+[Install]
+WantedBy=multi-user.target
